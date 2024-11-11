@@ -48,7 +48,7 @@ class Queue[T]:
     def empty(self) -> bool:
         return len(self) == 0
     
-    def print(self):
+    def display(self):
         if self.empty():
             return 'Empty queue'
         

@@ -41,9 +41,10 @@ class Stack[T]:
         return self.top.value
         
     # Exibe os elementos da pilha
-    def print(self) -> None:
+    def display(self) -> None:
         if len(self) == 0:
-            return None
+            print('Empty stack')
+            return
         s = ''
         p = self.top
 

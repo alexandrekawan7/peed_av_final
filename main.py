@@ -160,7 +160,7 @@ def main() -> str:
             while True:
                 print("\nSelect the option: ")
                 print("1 - Add product")
-                print("2 - Remove product")
+                print("2 - Sell product")
                 print("3 - View product replenishment stack")
                 print("4 - Exit")
 
@@ -173,21 +173,26 @@ def main() -> str:
                 if op4 == "1":
                     list = [0] * 2
                     add_stack = str(input("\nType the product name: "))
+
+                    if avl.search(add_stack) is None:
+                        print(f'Product {add_stack} not found')
+                        continue
+
                     q = int(input("Type the quantity desired: "))
                     list[0] = add_stack
                     list[1] = q
                     stack.push(list)
 
                 elif op4 == "2":
-                    list = [0] * 2
-                    remove_stack = str("\nType the product name: ")
-                    q = int(input("ype the quantity desired: "))
-                    list[0] = remove_stack
-                    list[1] = q
-                    stack.pop(list)
+                    product = stack.pop()
 
+                    if product is None:
+                        print('No product to sell')
+                        continue
+                    
+                    print(f'Product {product[0]} with {product[1]} sold.')
                 elif op4 == "3":
-                    print(stack.print())
+                    stack.display()
                 elif op4 == "4":
                     break
 
@@ -197,8 +202,9 @@ def main() -> str:
             while True:
                 print("\nSelect the option: ")
                 print("1 - Add order")
-                print("2 - Remove order")
+                print("2 - Attend order")
                 print("3 - View order management queue")
+                print("4 - Exit")
 
                 op5 = input("Choose an option: ")
 
@@ -209,28 +215,85 @@ def main() -> str:
                 if op5 == "1":
                     list = [0] * 2
                     add_queue = str(input("\nType the product name: "))
-                    q = int(input("ype the quantity desired: "))
+
+                    if avl.search(add_queue) is None:
+                        print(f'Product {add_queue} not found')
+                        continue
+
+                    q = int(input("Type the quantity desired: "))
                     list[0] = add_queue
                     list[1] = q
                     queue.push(list)
 
                 elif op5 == "2":
-                    list = [0] * 2
-                    remove_queue = str("\nType the product name: ")
-                    q = int(input("ype the quantity desired: "))
-                    list[0] = remove_queue
-                    list[1] = q
-                    queue.pop(list)
+                    order = queue.pop()
+
+                    if order is None:
+                        print("No order to attend...")
+                        continue
+
+                    print(f'Order {order[0]} with quantity {order[1]} attended.')
 
                 elif op5 == "3":
-                    print(queue.print())
+                    print(queue.display())
 
                 elif op5 == "4":
                     break
         elif op == "6":
-            pass
+            while True:
+                print("\nSelect the option: ")
+                print("1 - Name (Alphabetically)")
+                print("2 - Name (Alphabetically reverse)")
+                print("3 - Price (Ascending order)")
+                print("4 - Price (Descending order)")
+                print("5 - Exit")
+
+                op6 = input("Choose an option: ")
+
+                if op6 not in ["1", "2", "3", "4", "5"]:    
+                    print("\nInvalid option. Please try again.")
+                    continue
+            
+                if op6 == "1":
+                    for product in avl.in_order():
+                        print(str(product))
+
+                elif op6 == "2":
+                    l = avl.in_order()
+                    l.reverse()
+
+                    for product in l:
+                        print(str(product))
+
+                elif op6 == "3":
+                    l = avl.in_order()
+
+                    quicksort.quicksort(l, 0, len(l) - 1, lambda a, b: a.price < b.price)
+
+                    for product in l:
+                        print(str(product))
+                elif op6 == "4":
+                    l = avl.in_order()
+
+                    quicksort.quicksort(l, 0, len(l) - 1, lambda a, b: a.price > b.price)
+
+                    for product in l:
+                        print(str(product))
+                elif op6 == "5":
+                    break
         elif op == "7":
-            pass
+            print('\nProducts report\n')
+
+            products = avl.in_order()
+
+            print(f'{len(products)} products registered.')
+
+            for product in products:
+                print(f'\n{product.name}')
+                print(f'Category: {product.category}')
+                print(f'Price: {product.price}')
+                print(f'Quantity in stock: {product.quantity}')
+                print(f'Total stock value: {product.price * product.quantity}')
 
         elif op == "0":
             print("Exiting the program.")
