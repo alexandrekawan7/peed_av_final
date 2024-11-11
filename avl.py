@@ -140,14 +140,17 @@ class AVLTree[T]:
             return
         self.root = self._remove(self.root, value)
 
-    def _in_order(self, node: Node) -> None:
+    def _in_order(self, node: Node, dest: typing.List[T]) -> None:
         if node is not None:
-            self._in_order(node.left)
-            print(node.value)
-            self._in_order(node.right)
+            self._in_order(node.left, dest)
+            dest.append(node.value)
+            self._in_order(node.right, dest)
 
-    def in_order(self) -> None:
-        self._in_order(self.root)
+    def in_order(self) -> typing.List[T]:
+        l: typing.List[T] = []
+        self._in_order(self.root, l)
+
+        return l
 
     def _pre_order(self, node: Node) -> None:
         if node is not None:
